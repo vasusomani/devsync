@@ -5,6 +5,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../Constants/colors.dart';
+import '../../../model/user_model.dart';
+import '../../../services/api_services/auth_api.dart';
+import '../../../services/local_storage_services/helper_functions/toast_util.dart';
 import '../../components/custom_buttons.dart';
 import '../../components/textfields/auth_textfield.dart';
 
@@ -21,6 +24,47 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool isLoading = false;
+
+  signUp() async {
+    if (usernameController.text.isEmpty ||
+        nameController.text.isEmpty ||
+        emailController.text.isEmpty ||
+        passwordController.text.isEmpty ||
+        confirmPasswordController.text.isEmpty) {
+      ToastWidgit.bottomToast("Please fill all the fields");
+      return;
+    }
+    if (passwordController.text != confirmPasswordController.text) {
+      ToastWidgit.bottomToast("Passwords do not match");
+      return;
+    }
+    try {
+      UserModel? user = UserModel(
+        username: usernameController.text,
+        name: nameController.text,
+        email: emailController.text,
+        password: passwordController.text,
+      );
+      setState(() {
+        isLoading = true;
+      });
+      String? message = await AuthApi().signUp(user);
+      setState(() {
+        isLoading = false;
+      });
+      ToastWidgit.bottomToast(message!);
+      Navigator.pop(context);
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      ToastWidgit.bottomToast(e.toString());
+      rethrow;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,57 +107,64 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 22),
-              child: Column(
-                children: [
-                  AuthTextField(
-                    title: 'Username',
-                    controller: usernameController,
-                  ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.02,
-                  ),
-                  AuthTextField(
-                    title: 'Name',
-                    controller: nameController,
-                  ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.02,
-                  ),
-                  AuthTextField(
-                    title: 'Email',
-                    controller: emailController,
-                    isEmail: true,
-                  ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.02,
-                  ),
-                  AuthTextField(
-                    title: 'Password',
-                    controller: passwordController,
-                    inputAction: TextInputAction.done,
-                    isObscure: true,
-                  ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.02,
-                  ),
-                  AuthTextField(
-                    title: 'Confirm Password',
-                    controller: confirmPasswordController,
-                    inputAction: TextInputAction.done,
-                    isObscure: true,
-                  ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.04,
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.4,
-                    child: PrimaryButton(
-                      text: 'Submit',
-                      onPressed: () =>
-                          Navigator.of(context).pushNamed('/dashboard_admin'),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    AuthTextField(
+                      title: 'Username',
+                      isUsername: true,
+                      controller: usernameController,
                     ),
-                  ),
-                ],
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.02,
+                    ),
+                    AuthTextField(
+                      title: 'Name',
+                      controller: nameController,
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.02,
+                    ),
+                    AuthTextField(
+                      title: 'Email',
+                      controller: emailController,
+                      isEmail: true,
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.02,
+                    ),
+                    AuthTextField(
+                      title: 'Password',
+                      isPassword: true,
+                      controller: passwordController,
+                      inputAction: TextInputAction.next,
+                      isObscure: true,
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.02,
+                    ),
+                    AuthTextField(
+                      title: 'Confirm Password',
+                      isConfirmPassword: true,
+                      passwordText: passwordController.text,
+                      controller: confirmPasswordController,
+                      inputAction: TextInputAction.done,
+                      isObscure: true,
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.04,
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.4,
+                      child: PrimaryButton(
+                        text: 'Submit',
+                        isLoading: isLoading,
+                        onPressed: () async => await signUp(),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
             SizedBox(

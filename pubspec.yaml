@@ -42,6 +42,8 @@ dependencies:
   animated_text_kit: ^4.2.2
   typewritertext: ^3.0.2
   flutter_svg: ^2.0.10+1
+  http: ^1.2.1
+  fluttertoast: ^8.2.4
 
 dev_dependencies:
   flutter_test:

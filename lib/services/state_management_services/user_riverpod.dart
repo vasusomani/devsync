@@ -14,5 +14,5 @@ class UserNotifier extends StateNotifier<UserModel?> {
   }
 }
 
-final freelancerUserProvider =
+final userProvider =
     StateNotifierProvider<UserNotifier, UserModel?>((ref) => UserNotifier());

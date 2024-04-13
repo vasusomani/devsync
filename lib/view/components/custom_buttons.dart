@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants/colors.dart';
@@ -19,6 +20,7 @@ class PrimaryButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
+        minimumSize: const Size(double.infinity, 50),
         backgroundColor: CustomColors.primaryColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30.0),
@@ -28,7 +30,7 @@ class PrimaryButton extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
           child: (isLoading)
               ? const FittedBox(
-                  child: CircularProgressIndicator(color: Colors.white))
+                  child: CupertinoActivityIndicator(color: Colors.white))
               : Text(text, style: Theme.of(context).textTheme.labelMedium)),
     );
   }

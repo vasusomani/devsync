@@ -35,6 +35,7 @@ class AuthTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       style: Theme.of(context).textTheme.bodySmall!.copyWith(
             color: CustomColors.textColor1,
           ),
@@ -62,7 +63,7 @@ class AuthTextField extends StatelessWidget {
           return "Confirm Password and Your Password must be same";
         }
         if (isPassword && value.length < 6) {
-          return "Password must be at least 6 characters long and combination of Capital and Small letters, Numbers and Special characters";
+          return "Please create a strong password with atleast 6 characters";
         }
         return null;
       },
@@ -72,8 +73,11 @@ class AuthTextField extends StatelessWidget {
       cursorColor: CustomColors.textColor1,
       obscureText: isObscure,
       keyboardType: isNumber ? TextInputType.number : TextInputType.text,
-      autovalidateMode: AutovalidateMode.onUserInteraction,
       decoration: InputDecoration(
+        errorStyle: Theme.of(context)
+            .textTheme
+            .bodySmall!
+            .copyWith(color: CustomColors.alertColor, fontSize: 11),
         hintText: title,
         counterText: "",
         contentPadding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
