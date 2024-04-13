@@ -20,6 +20,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         appBarTheme: const AppBarTheme(
           backgroundColor: CustomColors.backgroundColor2,
+          titleTextStyle: TextStyle(
+            color: CustomColors.textColor1,
+            fontSize: 22,
+            fontWeight: FontWeight.w600,
+          ),
           elevation: 0,
           centerTitle: false,
         ),
@@ -46,6 +51,16 @@ class MyApp extends StatelessWidget {
             color: CustomColors.primaryColor,
           ),
           labelMedium: GoogleFonts.roboto(
+            fontSize: 22,
+            fontWeight: FontWeight.w600,
+            color: CustomColors.textColor1,
+          ),
+          labelSmall: GoogleFonts.jetBrainsMono(
+            fontSize: 15,
+            fontWeight: FontWeight.w600,
+            color: CustomColors.textColor1,
+          ),
+          bodyLarge: GoogleFonts.roboto(
             fontSize: 22,
             fontWeight: FontWeight.w600,
             color: CustomColors.textColor1,

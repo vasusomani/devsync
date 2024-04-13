@@ -76,7 +76,7 @@ class AuthTextField extends StatelessWidget {
       decoration: InputDecoration(
         hintText: title,
         counterText: "",
-        contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
+        contentPadding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
         suffixIcon: (title == "Your Password")
             ? GestureDetector(
                 onTap: onEyeTap,
@@ -87,8 +87,8 @@ class AuthTextField extends StatelessWidget {
                       : CustomColors.textColor1.withOpacity(0.5),
                 ))
             : null,
-        hintStyle: Theme.of(context).textTheme.bodyText1!.copyWith(
-              color: CustomColors.textColor1,
+        hintStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
+              color: CustomColors.textColor2,
             ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(25)),

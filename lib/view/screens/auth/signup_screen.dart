@@ -110,7 +110,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     child: PrimaryButton(
                       text: 'Submit',
                       onPressed: () =>
-                          Navigator.of(context).pushNamed('/dashboard_common'),
+                          Navigator.of(context).pushNamed('/dashboard_admin'),
                     ),
                   ),
                 ],

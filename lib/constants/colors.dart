@@ -9,6 +9,7 @@ class CustomColors {
   static const Color textColor2 = Color(0xFF8A8A8A);
   static const Color textColor3 = Color(0xFF3fba50);
   static const Color textFieldColor = Color(0xFF232e3d);
+  static const Color gold = Color(0xFFD7A924);
   // static const Color successBackgroundColor = Color(0xFF7EB0F2);
   // static Color secondaryColor1 = Colors.grey[200]!;
   // static Color secondaryColor2 = Colors.grey.shade600;

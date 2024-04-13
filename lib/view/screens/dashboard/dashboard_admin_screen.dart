@@ -27,7 +27,7 @@ class _DashboardAdminScreenState extends State<DashboardAdminScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Hii Vasu 👋,",
+                "Hi Vasu 👋,",
                 style: Theme.of(context).textTheme.headlineSmall,
               ),
               const SizedBox(height: 20),
@@ -72,7 +72,8 @@ class _DashboardAdminScreenState extends State<DashboardAdminScreen> {
                               BorderSide(color: CustomColors.textColor1),
                         ),
                         suffixIcon: IconButton(
-                          onPressed: () {},
+                          onPressed: () =>
+                              Navigator.pushNamed(context, '/terminal'),
                           icon: const Icon(
                             CupertinoIcons.arrow_right,
                             size: 30,
@@ -158,13 +159,23 @@ class _DashboardAdminScreenState extends State<DashboardAdminScreen> {
                                             "121.173.45.1.1",
                                             style: Theme.of(context)
                                                 .textTheme
-                                                .bodyMedium,
+                                                .bodyMedium!
+                                                .copyWith(
+                                                  color:
+                                                      CustomColors.textColor1,
+                                                ),
                                           ),
                                           Text(
                                             "Session Address",
                                             style: Theme.of(context)
                                                 .textTheme
-                                                .bodyMedium,
+                                                .bodyMedium!
+                                                .copyWith(
+                                                  color:
+                                                      CustomColors.textColor2,
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.normal,
+                                                ),
                                           ),
                                         ],
                                       ),
@@ -217,7 +228,9 @@ class _DashboardAdminScreenState extends State<DashboardAdminScreen> {
                                         SizedBox(
                                           width: double.maxFinite,
                                           child: SecondaryButton(
-                                            onPressed: () {},
+                                            onPressed: () =>
+                                                Navigator.pushNamed(
+                                                    context, '/terminal'),
                                             text: "Connect",
                                             isAlert: true,
                                           ),
