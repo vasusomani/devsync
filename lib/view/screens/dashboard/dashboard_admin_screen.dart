@@ -1,46 +1,80 @@
+import 'package:devsync/model/user_model.dart';
 import 'package:devsync/view/components/custom_buttons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../Constants/colors.dart';
+import '../../../services/state_management_services/user_riverpod.dart';
 
-class DashboardAdminScreen extends StatefulWidget {
+class DashboardAdminScreen extends ConsumerStatefulWidget {
   const DashboardAdminScreen({super.key});
 
   @override
-  State<DashboardAdminScreen> createState() => _DashboardAdminScreenState();
+  ConsumerState<DashboardAdminScreen> createState() =>
+      _DashboardAdminScreenState();
 }
 
-class _DashboardAdminScreenState extends State<DashboardAdminScreen> {
+class _DashboardAdminScreenState extends ConsumerState<DashboardAdminScreen> {
   bool isExpanded = false;
   @override
   Widget build(BuildContext context) {
+    UserModel? user = ref.read(userProvider);
     return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        toolbarHeight: -30,
+      ),
       backgroundColor: CustomColors.backgroundColor2,
-      appBar: AppBar(),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Hi Vasu 👋,",
-                style: Theme.of(context).textTheme.headlineSmall,
+      body: NestedScrollView(
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) =>
+            [
+          SliverAppBar(
+            centerTitle: false,
+            bottom: PreferredSize(
+              preferredSize: const Size.fromHeight(50),
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(
+                    20, 20 + MediaQuery.of(context).padding.top, 10, 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Hi ${user?.name}👋,",
+                      style: Theme.of(context).textTheme.headlineSmall,
+                    ),
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.settings,
+                        size: 30,
+                        color: CustomColors.textColor1,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              const SizedBox(height: 20),
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 0, vertical: 20),
+            ),
+            titleSpacing: 0,
+          ),
+          SliverAppBar(
+            scrolledUnderElevation: 1,
+            pinned: true,
+            bottom: PreferredSize(
+              preferredSize: const Size.fromHeight(120),
+              child: Container(
+                padding: const EdgeInsets.fromLTRB(15, 20, 15, 15),
                 width: double.maxFinite,
                 decoration: BoxDecoration(
-                  // color: CustomColors.backgroundColor,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
@@ -95,158 +129,187 @@ class _DashboardAdminScreenState extends State<DashboardAdminScreen> {
                             ),
                       ),
                     ),
-                    //or create a new session, learn how
-                    const SizedBox(height: 40),
-                    RichText(
-                        text: TextSpan(
-                      text: "Set up a new session instantly, ",
-                      style: Theme.of(context).textTheme.bodyMedium,
-                      children: [
-                        TextSpan(
-                          text: "Learn How",
-                          style:
-                              Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                    color: CustomColors.textColor1,
-                                  ),
-                        ),
-                      ],
-                    )),
-                    const SizedBox(height: 30),
-                    //horizontal line
-                    const Divider(
-                      color: CustomColors.textColor1,
-                      thickness: 1,
-                    ),
-                    const SizedBox(height: 20),
-                    Text(
-                      "My Sessions",
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                    Column(
-                      children: [
-                        for (int i = 0; i < 3; i++)
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                isExpanded = !isExpanded;
-                              });
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 20),
-                              margin: const EdgeInsets.symmetric(vertical: 10),
-                              decoration: BoxDecoration(
-                                color: CustomColors.backgroundColor,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      SvgPicture.asset(
-                                        "assets/icons/terminal.svg",
-                                        height: 30,
-                                        width: 30,
-                                        color: CustomColors.primaryColor,
-                                      ),
-                                      const SizedBox(width: 20),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "121.173.45.1.1",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyMedium!
-                                                .copyWith(
-                                                  color:
-                                                      CustomColors.textColor1,
-                                                ),
-                                          ),
-                                          Text(
-                                            "Session Address",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyMedium!
-                                                .copyWith(
-                                                  color:
-                                                      CustomColors.textColor2,
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.normal,
-                                                ),
-                                          ),
-                                        ],
-                                      ),
-                                      const Spacer(),
-                                      IconButton(
-                                        onPressed: () {},
-                                        icon: const Icon(
-                                          Icons.info,
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 20),
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 0, vertical: 20),
+                  width: double.maxFinite,
+                  decoration: BoxDecoration(
+                    // color: CustomColors.backgroundColor,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      RichText(
+                          text: TextSpan(
+                        text: "Set up a new session instantly, ",
+                        style: Theme.of(context).textTheme.bodyMedium,
+                        children: [
+                          TextSpan(
+                            text: "Learn How",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(
+                                  color: CustomColors.textColor1,
+                                ),
+                          ),
+                        ],
+                      )),
+                      const SizedBox(height: 30),
+                      //horizontal line
+                      const Divider(
+                        color: CustomColors.textColor1,
+                        thickness: 1,
+                      ),
+                      const SizedBox(height: 20),
+                      Text(
+                        "My Sessions",
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                      Column(
+                        children: [
+                          for (int i = 0; i < 3; i++)
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  isExpanded = !isExpanded;
+                                });
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 20),
+                                margin:
+                                    const EdgeInsets.symmetric(vertical: 10),
+                                decoration: BoxDecoration(
+                                  color: CustomColors.backgroundColor,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        SvgPicture.asset(
+                                          "assets/icons/terminal.svg",
+                                          height: 30,
+                                          width: 30,
                                           color: CustomColors.primaryColor,
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                  if (isExpanded)
-                                    Column(
-                                      children: [
-                                        const SizedBox(height: 20),
-                                        _buildInfoRow(
-                                            "Device Name", "Vasu's MAC"),
-                                        const SizedBox(height: 10),
-                                        _buildInfoRow("Active Users", "7"),
-                                        const SizedBox(height: 10),
-                                        _buildInfoRow(
-                                            "Session Time", "23 mins"),
-                                        const SizedBox(height: 10),
-                                        _buildInfoRow(
-                                            "Session Status", "Active"),
-                                        const SizedBox(height: 20),
-                                        //red color connect button
-                                        SizedBox(
-                                          width: double.maxFinite,
-                                          child: Row(
-                                            children: [
-                                              Expanded(
-                                                child: SecondaryButton(
-                                                  onPressed: () {},
-                                                  text: "View Logs",
-                                                ),
-                                              ),
-                                              const SizedBox(width: 15),
-                                              Expanded(
-                                                  child: SecondaryButton(
-                                                onPressed: () {},
-                                                text: "Settings",
-                                              )),
-                                            ],
-                                          ),
+                                        const SizedBox(width: 20),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "121.173.45.1.1",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyMedium!
+                                                  .copyWith(
+                                                    color:
+                                                        CustomColors.textColor1,
+                                                  ),
+                                            ),
+                                            Text(
+                                              "Session Address",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyMedium!
+                                                  .copyWith(
+                                                    color:
+                                                        CustomColors.textColor2,
+                                                    fontSize: 18,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                  ),
+                                            ),
+                                          ],
                                         ),
-
-                                        SizedBox(
-                                          width: double.maxFinite,
-                                          child: SecondaryButton(
-                                            onPressed: () =>
-                                                Navigator.pushNamed(
-                                                    context, '/terminal'),
-                                            text: "Connect",
-                                            isAlert: true,
+                                        const Spacer(),
+                                        IconButton(
+                                          onPressed: () {},
+                                          icon: const Icon(
+                                            Icons.info,
+                                            color: CustomColors.primaryColor,
                                           ),
                                         ),
                                       ],
                                     ),
-                                ],
+                                    if (isExpanded)
+                                      Column(
+                                        children: [
+                                          const SizedBox(height: 20),
+                                          _buildInfoRow(
+                                              "Device Name", "Vasu's MAC"),
+                                          const SizedBox(height: 10),
+                                          _buildInfoRow("Active Users", "7"),
+                                          const SizedBox(height: 10),
+                                          _buildInfoRow(
+                                              "Session Time", "23 mins"),
+                                          const SizedBox(height: 10),
+                                          _buildInfoRow(
+                                              "Session Status", "Active"),
+                                          const SizedBox(height: 20),
+                                          //red color connect button
+                                          SizedBox(
+                                            width: double.maxFinite,
+                                            child: Row(
+                                              children: [
+                                                Expanded(
+                                                  child: SecondaryButton(
+                                                    onPressed: () {},
+                                                    text: "View Logs",
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 15),
+                                                Expanded(
+                                                    child: SecondaryButton(
+                                                  onPressed: () {},
+                                                  text: "Settings",
+                                                )),
+                                              ],
+                                            ),
+                                          ),
+
+                                          SizedBox(
+                                            width: double.maxFinite,
+                                            child: SecondaryButton(
+                                              onPressed: () =>
+                                                  Navigator.pushNamed(
+                                                      context, '/terminal'),
+                                              text: "Connect",
+                                              isAlert: true,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                      ],
-                    ),
-                  ],
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
