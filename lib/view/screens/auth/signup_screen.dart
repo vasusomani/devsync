@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../../../Constants/colors.dart';
 import '../../components/custom_buttons.dart';
@@ -19,6 +20,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +37,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               children: [
                 SvgPicture.asset(
                   'assets/images/logo.svg',
-                  height: 40,
+                  height: 60,
                 ),
                 const SizedBox(
                   width: 10,
@@ -51,10 +53,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ),
             Text(
               'Sign Up',
-              style: Theme.of(context).textTheme.headlineMedium,
+              style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                    color: CustomColors.textColor1,
+                    fontFamily: GoogleFonts.montserrat().fontFamily,
+                  ),
             ),
             const SizedBox(
-              height: 40,
+              height: 20,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 22),
@@ -64,23 +69,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     title: 'Username',
                     controller: usernameController,
                   ),
-                  const SizedBox(
-                    height: 20,
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.02,
                   ),
                   AuthTextField(
                     title: 'Name',
                     controller: nameController,
                   ),
-                  const SizedBox(
-                    height: 20,
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.02,
                   ),
                   AuthTextField(
                     title: 'Email',
                     controller: emailController,
                     isEmail: true,
                   ),
-                  const SizedBox(
-                    height: 20,
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.02,
                   ),
                   AuthTextField(
                     title: 'Password',
@@ -88,30 +93,31 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     inputAction: TextInputAction.done,
                     isObscure: true,
                   ),
-                  const SizedBox(
-                    height: 20,
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.02,
                   ),
                   AuthTextField(
                     title: 'Confirm Password',
-                    controller: passwordController,
+                    controller: confirmPasswordController,
                     inputAction: TextInputAction.done,
                     isObscure: true,
                   ),
                   SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.05,
+                    height: MediaQuery.of(context).size.height * 0.04,
                   ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.4,
                     child: PrimaryButton(
                       text: 'Submit',
-                      onPressed: () => Navigator.of(context).pushNamed('/home'),
+                      onPressed: () =>
+                          Navigator.of(context).pushNamed('/dashboard_common'),
                     ),
                   ),
                 ],
               ),
             ),
-            const SizedBox(
-              height: 45,
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.03,
             ),
             Row(
               children: [
@@ -138,8 +144,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 )),
               ],
             ),
-            const SizedBox(
-              height: 35,
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.03,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 22),
@@ -150,7 +156,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
             ),
             const SizedBox(
-              height: 20,
+              height: 10,
             ),
             //create account
             Row(

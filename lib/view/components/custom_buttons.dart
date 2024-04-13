@@ -27,8 +27,8 @@ class PrimaryButton extends StatelessWidget {
       child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
           child: (isLoading)
-              ? FittedBox(
-                  child: const CircularProgressIndicator(color: Colors.white))
+              ? const FittedBox(
+                  child: CircularProgressIndicator(color: Colors.white))
               : Text(text, style: Theme.of(context).textTheme.labelMedium)),
     );
   }
@@ -36,77 +36,35 @@ class PrimaryButton extends StatelessWidget {
 
 class SecondaryButton extends StatelessWidget {
   const SecondaryButton(
-      {super.key, required this.onPressed, required this.text});
-  final VoidCallback onPressed;
-  final String text;
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: CustomColors.backgroundColor,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(25),
-        ),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-        child: Text(text,
-            style: Theme.of(context)
-                .textTheme
-                .bodyText1!
-                .copyWith(color: CustomColors.primaryColor)),
-      ),
-    );
-  }
-}
-
-class TertiaryButton extends StatelessWidget {
-  const TertiaryButton(
       {super.key,
       required this.onPressed,
       required this.text,
-      this.suffix,
+      this.isAlert = false,
       this.isLoading = false});
   final VoidCallback onPressed;
-  final String text;
-  final Widget? suffix;
   final bool isLoading;
+  final bool isAlert;
+  final String text;
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: CustomColors.primaryColor,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30),
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all<Color>((isAlert)
+            ? CustomColors.alertColor
+            : CustomColors.backgroundColor2),
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
         ),
       ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-        child: (isLoading)
-            ? const SizedBox(
-                height: 24,
-                width: 24,
-                child: CircularProgressIndicator(
-                    strokeWidth: 3, color: CustomColors.backgroundColor),
-              )
-            : Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(text,
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyText1!
-                          .copyWith(color: CustomColors.backgroundColor)),
-                  if (suffix != null)
-                    Padding(
-                      padding: const EdgeInsets.only(left: 5),
-                      child: suffix!,
-                    ),
-                ],
-              ),
+      child: Text(
+        text,
+        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+              color: (isAlert) ? Colors.white : CustomColors.primaryColor,
+            ),
       ),
     );
   }
@@ -133,12 +91,12 @@ class SocialButton extends StatelessWidget {
         onPressed: onPressed,
         style: ButtonStyle(
             shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10))),
+                borderRadius: BorderRadius.circular(45))),
             elevation: const MaterialStatePropertyAll(2),
             backgroundColor:
                 const MaterialStatePropertyAll(CustomColors.textFieldColor)),
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20),
+          padding: const EdgeInsets.symmetric(vertical: 15),
           child: (isLoading)
               ? const SizedBox(
                   height: 23,

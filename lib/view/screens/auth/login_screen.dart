@@ -1,9 +1,12 @@
 import 'dart:math';
 
+import 'package:devsync/view/routes/routing_transition.dart';
+import 'package:devsync/view/screens/auth/signup_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../../../Constants/colors.dart';
 import '../../components/custom_buttons.dart';
@@ -22,6 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       backgroundColor: CustomColors.backgroundColor2,
       body: SingleChildScrollView(
         child: Column(
@@ -31,26 +35,29 @@ class _LoginScreenState extends State<LoginScreen> {
             SizedBox(
               height: MediaQuery.of(context).padding.top + 30,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SvgPicture.asset(
-                  'assets/images/logo.svg',
-                  height: 40,
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                Text(
-                  'DevSync',
-                  style: Theme.of(context).textTheme.labelLarge!,
-                ),
-              ],
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SvgPicture.asset(
+                    'assets/images/logo.svg',
+                    height: 60,
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    'DevSync',
+                    style: Theme.of(context).textTheme.labelLarge!,
+                  ),
+                ],
+              ),
             ),
             Stack(
               children: [
                 // Container(
-                //   height: MediaQuery.of(context).size.height * 0.25,
+                //   height: MediaQuery.of(context).size.height * 0.3,
                 //   width: MediaQuery.of(context).size.width,
                 //   decoration: ShapeDecoration(
                 //     color: CustomColors.backgroundColor,
@@ -69,10 +76,16 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       Text(
                         'Sign In',
-                        style: Theme.of(context).textTheme.headlineMedium,
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineMedium!
+                            .copyWith(
+                              color: CustomColors.textColor1,
+                              fontFamily: GoogleFonts.montserrat().fontFamily,
+                            ),
                       ),
                       SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.1,
+                        height: MediaQuery.of(context).size.height * 0.05,
                       ),
                     ],
                   ),
@@ -87,8 +100,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     title: 'Username',
                     controller: usernameController,
                   ),
-                  const SizedBox(
-                    height: 20,
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.02,
                   ),
                   AuthTextField(
                     title: 'Password',
@@ -96,8 +109,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     inputAction: TextInputAction.done,
                     isObscure: true,
                   ),
-                  const SizedBox(
-                    height: 20,
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.02,
                   ),
                   Align(
                     alignment: Alignment.centerRight,
@@ -109,20 +122,21 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.05,
+                    height: MediaQuery.of(context).size.height * 0.04,
                   ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.4,
                     child: PrimaryButton(
                       text: 'Submit',
-                      onPressed: () => Navigator.of(context).pushNamed('/home'),
+                      onPressed: () =>
+                          Navigator.of(context).pushNamed('/dashboard_common'),
                     ),
                   ),
                 ],
               ),
             ),
             SizedBox(
-              height: 45,
+              height: 25,
             ),
             Row(
               children: [
@@ -150,10 +164,11 @@ class _LoginScreenState extends State<LoginScreen> {
               ],
             ),
             SizedBox(
-              height: 35,
+              height: 25,
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 22),
+              padding: EdgeInsets.symmetric(
+                  horizontal: MediaQuery.of(context).size.width * 0.1),
               child: SocialButton(
                 onPressed: () {},
                 isLogin: true,
@@ -174,9 +189,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                 ),
                 TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pushNamed('/signup');
-                  },
+                  onPressed: () => Navigator.push(context,
+                      SlideRoute(page: SignUpScreen(), isRight: false)),
                   child: Text(
                     'Create Account',
                     style: Theme.of(context).textTheme.bodySmall!.copyWith(

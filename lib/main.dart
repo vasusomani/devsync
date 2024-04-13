@@ -18,6 +18,11 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       onGenerateRoute: RouteGenerator.generateRoute,
       theme: ThemeData(
+        appBarTheme: const AppBarTheme(
+          backgroundColor: CustomColors.backgroundColor2,
+          elevation: 0,
+          centerTitle: false,
+        ),
         scaffoldBackgroundColor: CustomColors.backgroundColor,
         textTheme: TextTheme(
           headlineLarge: GoogleFonts.jetBrainsMono(
@@ -30,8 +35,13 @@ class MyApp extends StatelessWidget {
             fontWeight: FontWeight.w600,
             color: CustomColors.textColor1,
           ),
+          headlineSmall: GoogleFonts.jetBrainsMono(
+            fontSize: 24,
+            fontWeight: FontWeight.w600,
+            color: CustomColors.textColor1,
+          ),
           labelLarge: GoogleFonts.adventPro(
-            fontSize: 40,
+            fontSize: 56,
             fontWeight: FontWeight.w600,
             color: CustomColors.primaryColor,
           ),

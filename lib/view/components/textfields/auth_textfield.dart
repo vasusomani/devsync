@@ -36,7 +36,7 @@ class AuthTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       style: Theme.of(context).textTheme.bodySmall!.copyWith(
-            color: CustomColors.textColor2,
+            color: CustomColors.textColor1,
           ),
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -69,14 +69,14 @@ class AuthTextField extends StatelessWidget {
       controller: controller,
       maxLength: 50,
       textInputAction: inputAction ?? TextInputAction.next,
-      cursorColor: CustomColors.textColor2,
+      cursorColor: CustomColors.textColor1,
       obscureText: isObscure,
       keyboardType: isNumber ? TextInputType.number : TextInputType.text,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       decoration: InputDecoration(
         hintText: title,
         counterText: "",
-        contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+        contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
         suffixIcon: (title == "Your Password")
             ? GestureDetector(
                 onTap: onEyeTap,

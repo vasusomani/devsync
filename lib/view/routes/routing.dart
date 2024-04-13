@@ -1,5 +1,5 @@
 import 'package:devsync/view/screens/auth/login_screen.dart';
-import 'package:devsync/view/screens/home_screen.dart';
+import 'package:devsync/view/screens/dashboard/dashboard_admin_screen.dart';
 import 'package:devsync/view/screens/on-boarding/splash_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -14,6 +14,8 @@ class RouteGenerator extends NavigatorObserver {
         return MaterialPageRoute(builder: (_) => const LoginScreen());
       case '/signup':
         return MaterialPageRoute(builder: (_) => const SignUpScreen());
+      case '/dashboard_common':
+        return MaterialPageRoute(builder: (_) => const DashboardAdminScreen());
       default:
         return _errorRoute();
     }
