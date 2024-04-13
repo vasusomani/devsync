@@ -1,12 +1,19 @@
+import 'package:devsync/view/screens/auth/login_screen.dart';
 import 'package:devsync/view/screens/home_screen.dart';
+import 'package:devsync/view/screens/on-boarding/splash_screen.dart';
 import 'package:flutter/material.dart';
+
+import '../screens/auth/signup_screen.dart';
 
 class RouteGenerator extends NavigatorObserver {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case '/':
-        return MaterialPageRoute(builder: (_) => const HomeScreen());
-
+        return MaterialPageRoute(builder: (_) => const SplashScreen());
+      case '/login':
+        return MaterialPageRoute(builder: (_) => const LoginScreen());
+      case '/signup':
+        return MaterialPageRoute(builder: (_) => const SignUpScreen());
       default:
         return _errorRoute();
     }

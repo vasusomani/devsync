@@ -1,8 +1,13 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CustomColors {
   static const Color backgroundColor = Color(0xFF0e1217);
+  static const Color backgroundColor2 = Color(0xFF181c21);
   static const Color primaryColor = Color(0xFF33B3AE);
+  static const Color textColor1 = Color(0xFFCBCBCB);
+  static const Color textColor2 = Color(0xFF8A8A8A);
+  static const Color textFieldColor = Color(0xFF232e3d);
   // static const Color successBackgroundColor = Color(0xFF7EB0F2);
   // static Color secondaryColor1 = Colors.grey[200]!;
   // static Color secondaryColor2 = Colors.grey.shade600;
