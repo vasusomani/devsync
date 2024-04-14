@@ -8,7 +8,7 @@ import '../secure_storage.dart';
 class HandleLogin {
   final String USER_DATA_KEY = "USER_DATA";
 
-  Future getLoginDetails() async {
+  Future<UserModel?> getLoginDetails() async {
     try {
       String? user = await SecureStorageService().readSecureData(USER_DATA_KEY);
       if (user != null && user.isNotEmpty && user != "null") {

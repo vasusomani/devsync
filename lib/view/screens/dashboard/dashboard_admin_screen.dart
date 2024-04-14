@@ -1,10 +1,10 @@
 import 'package:devsync/model/user_model.dart';
+import 'package:devsync/services/local_storage_services/helper_functions/toast_util.dart';
+import 'package:devsync/services/websocket_services/terminal_service.dart';
 import 'package:devsync/view/components/custom_buttons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -21,6 +21,19 @@ class DashboardAdminScreen extends ConsumerStatefulWidget {
 
 class _DashboardAdminScreenState extends ConsumerState<DashboardAdminScreen> {
   bool isExpanded = false;
+  TextEditingController sessionAddressController = TextEditingController();
+
+  joinSession(String sessionAddress) {
+    try {
+      UserModel? user = ref.read(userProvider);
+      TerminalService(token: user!.token!, address: sessionAddress);
+      Navigator.pushNamed(context, '/terminal');
+    } catch (e) {
+      debugPrint(e.toString());
+      ToastWidgit.bottomToast(e.toString());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     UserModel? user = ref.read(userProvider);
@@ -83,9 +96,10 @@ class _DashboardAdminScreenState extends ConsumerState<DashboardAdminScreen> {
                     ),
                     const SizedBox(height: 10),
                     TextFormField(
+                      controller: sessionAddressController,
                       keyboardType: TextInputType.number,
                       style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                            color: CustomColors.textColor2,
+                            color: CustomColors.textColor1,
                           ),
                       decoration: InputDecoration(
                         hintText: "Enter session address",
@@ -107,7 +121,7 @@ class _DashboardAdminScreenState extends ConsumerState<DashboardAdminScreen> {
                         ),
                         suffixIcon: IconButton(
                           onPressed: () =>
-                              Navigator.pushNamed(context, '/terminal'),
+                              joinSession(sessionAddressController.text),
                           icon: const Icon(
                             CupertinoIcons.arrow_right,
                             size: 30,
