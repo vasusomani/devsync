@@ -1,27 +1,100 @@
-import 'package:devsync/Constants/colors.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'dart:convert';
+import 'dart:developer';
 
+import 'package:devsync/Constants/colors.dart';
+import 'package:devsync/model/user_model.dart';
+import 'package:devsync/services/local_storage_services/helper_functions/toast_util.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
+
+import '../../../model/session_model.dart';
+import '../../../services/state_management_services/user_riverpod.dart';
 import '../../components/drawers/terminal_drawer.dart';
 
-class TerminalScreen extends StatefulWidget {
-  const TerminalScreen({super.key});
+class TerminalScreen extends ConsumerStatefulWidget {
+  const TerminalScreen({super.key, required this.address});
+  final String address;
 
   @override
-  State<TerminalScreen> createState() => _TerminalScreenState();
+  ConsumerState<TerminalScreen> createState() => _TerminalScreenState();
 }
 
-class _TerminalScreenState extends State<TerminalScreen> {
+class _TerminalScreenState extends ConsumerState<TerminalScreen> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
-  final String _command =
-      'git clone https://github.com/Walnut-HealthTech/Walnut-Mobile-App.git';
-  final String _output = '''Cloning into 'Walnut-Mobile-App'...
-  remote: Enumerating objects: 20214, done.
-  remote: Counting objects: 100% (20214/20214), done.
-  remote: Compressing objects: 100% (5606/5606), done.
-  remote: Total 20214 (delta 14213), reused 19943 (delta 14006), pack-reused 0
-  Receiving objects: 100% (20214/20214), 214.23 MiB | 4.47 MiB/s, done.
-  Resolving deltas: 100% (14213/14213), done.''';
+  final List<Map<String, dynamic>> _output = [];
+  late SessionModel sessionData;
+  late WebSocketChannel channel;
+  TextEditingController commandController = TextEditingController();
+
+  @override
+  void initState() {
+    String webSocketUrl = 'ws://${widget.address}/connect-session';
+    debugPrint(webSocketUrl.toString());
+    UserModel? user = ref.read(userProvider);
+    final uri =
+        Uri.parse("$webSocketUrl?token=${Uri.encodeComponent(user!.token!)}");
+    debugPrint(uri.toString());
+    channel = WebSocketChannel.connect(uri);
+    channel.stream.listen(
+      (data) {
+        debugPrint(data.toString());
+        final session = jsonDecode(data);
+        debugPrint("SESSION DATA" + session.toString());
+        if (session['type'] == 'welcome') {
+          sessionData = SessionModel.fromJson(session['data']);
+        } else if (session['type'] == 'stdout') {
+          setState(() {
+            _output.add({
+              "type": session['type'],
+              "output": session['data'],
+            });
+          });
+          log(session['command']);
+        } else if (session['type'] == 'stderr') {
+          setState(() {
+            _output.add({
+              "type": session['type'],
+              "output": session['data'],
+            });
+          });
+        }
+      },
+      onError: (error) {
+        debugPrint("Error in WebSocket Connection: ${error.toString()}");
+        ToastWidgit.bottomToast(
+            "Error in WebSocket Connection: ${error.toString()}");
+      },
+      onDone: () {
+        debugPrint("WebSocket Connection Closed");
+      },
+    );
+
+    super.initState();
+  }
+
+  sendCommand(Map<String, dynamic> command) {
+    channel.sink.add(
+      jsonEncode(
+        {
+          "type": command['type'],
+          "data": {
+            "sessionId": sessionData.id,
+            "baseDirectory": '/',
+            "command": command['command']
+          }
+        },
+      ),
+    );
+    setState(() {
+      _output.add({
+        "type": "command",
+        "output": command['command'],
+      });
+      commandController.clear();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,26 +133,13 @@ class _TerminalScreenState extends State<TerminalScreen> {
         ],
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("\$ ${_command}",
-                style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                    color: CustomColors.primaryColor, wordSpacing: -5)),
-            SizedBox(height: 5),
-            Text(
-              _output,
-              textAlign: TextAlign.left,
-              style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                    color: CustomColors.textColor1,
-                    fontSize: 13,
-                    wordSpacing: -5,
-                  ),
-            ),
-          ],
-        ),
-      ),
+          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+          child: ListView.builder(
+            itemCount: _output.length,
+            itemBuilder: (context, index) {
+              return _buildTerminalOutput(_output[index]);
+            },
+          )),
       drawer: const TerminalDrawer(),
       bottomSheet: Container(
         color: CustomColors.backgroundColor2,
@@ -97,6 +157,7 @@ class _TerminalScreenState extends State<TerminalScreen> {
             ),
             Expanded(
               child: TextField(
+                controller: commandController,
                 cursorColor: CustomColors.textColor1,
                 style: Theme.of(context).textTheme.labelSmall!.copyWith(
                       color: CustomColors.textColor1,
@@ -120,11 +181,41 @@ class _TerminalScreenState extends State<TerminalScreen> {
                 height: 20,
                 width: 20,
               ),
-              onPressed: () {},
+              onPressed: () => sendCommand({
+                'type': 'command',
+                'command': commandController.text,
+              }),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  _buildTerminalOutput(Map<String, dynamic> output) {
+    debugPrint(output.toString());
+    Color color = (output['type'] == 'stdout')
+        ? CustomColors.textColor1
+        : ((output['type'] == 'stderr')
+            ? CustomColors.alertColor
+            : CustomColors.primaryColor);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (output['type'] == 'command')
+          Text("\$ ${output["output"]}",
+              style: Theme.of(context)
+                  .textTheme
+                  .labelSmall!
+                  .copyWith(color: CustomColors.primaryColor, wordSpacing: -5)),
+        if (output['type'] != 'command')
+          Text(output['output'],
+              style: Theme.of(context)
+                  .textTheme
+                  .labelSmall!
+                  .copyWith(color: color, wordSpacing: -5)),
+        SizedBox(height: 5),
+      ],
     );
   }
 }

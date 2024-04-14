@@ -19,7 +19,9 @@ class RouteGenerator extends NavigatorObserver {
       case '/dashboard_admin':
         return MaterialPageRoute(builder: (_) => const DashboardAdminScreen());
       case '/terminal':
-        return MaterialPageRoute(builder: (_) => const TerminalScreen());
+        String address = settings.arguments as String;
+        return MaterialPageRoute(
+            builder: (_) => TerminalScreen(address: address));
       case '/admin_settings':
         return MaterialPageRoute(builder: (_) => const AdminSettings());
       default:

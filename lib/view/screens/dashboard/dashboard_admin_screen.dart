@@ -24,14 +24,12 @@ class _DashboardAdminScreenState extends ConsumerState<DashboardAdminScreen> {
   TextEditingController sessionAddressController = TextEditingController();
 
   joinSession(String sessionAddress) {
-    try {
-      UserModel? user = ref.read(userProvider);
-      TerminalService(token: user!.token!, address: sessionAddress);
-      Navigator.pushNamed(context, '/terminal');
-    } catch (e) {
-      debugPrint(e.toString());
-      ToastWidgit.bottomToast(e.toString());
-    }
+    // try {
+    Navigator.pushNamed(context, '/terminal', arguments: sessionAddress);
+    // } catch (e) {
+    //   debugPrint(e.toString());
+    //   ToastWidgit.bottomToast(e.toString());
+    // }
   }
 
   @override

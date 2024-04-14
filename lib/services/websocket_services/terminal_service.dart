@@ -1,9 +1,6 @@
-import 'dart:io';
-
+import 'package:devsync/model/session_model.dart';
 import 'package:flutter/material.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
-
-import '../../constants/server.dart';
 
 class TerminalService {
   final String token;
@@ -18,7 +15,7 @@ class TerminalService {
 
     channel.stream.listen(
       (data) {
-        debugPrint("Data Received: $data");
+        SessionModel sessionData = SessionModel.fromJson(data);
       },
       onError: (error) =>
           debugPrint("Error in WebSocket Connection: ${error.toString()}"),
