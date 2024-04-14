@@ -42,10 +42,12 @@ class SecondaryButton extends StatelessWidget {
       required this.onPressed,
       required this.text,
       this.isAlert = false,
+      this.isContrast = false,
       this.isLoading = false});
   final VoidCallback onPressed;
   final bool isLoading;
   final bool isAlert;
+  final bool isContrast;
   final String text;
 
   @override
@@ -55,7 +57,11 @@ class SecondaryButton extends StatelessWidget {
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.all<Color>((isAlert)
             ? CustomColors.alertColor
-            : CustomColors.backgroundColor2),
+            : (isContrast)
+                ? CustomColors.primaryColor
+                : CustomColors.backgroundColor2),
+        padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+            const EdgeInsets.symmetric(horizontal: 15, vertical: 10)),
         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
@@ -65,7 +71,9 @@ class SecondaryButton extends StatelessWidget {
       child: Text(
         text,
         style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-              color: (isAlert) ? Colors.white : CustomColors.primaryColor,
+              color: (isAlert || isContrast)
+                  ? Colors.white
+                  : CustomColors.primaryColor,
             ),
       ),
     );

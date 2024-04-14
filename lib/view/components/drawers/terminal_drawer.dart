@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../Constants/colors.dart';
+import '../custom_buttons.dart';
 
 class TerminalDrawer extends StatelessWidget {
   const TerminalDrawer({super.key});
@@ -73,9 +74,6 @@ class TerminalDrawer extends StatelessWidget {
                                       fontWeight: FontWeight.w400)),
                         ],
                       ),
-                      Spacer(),
-                      Icon(Icons.settings,
-                          color: CustomColors.textColor1, size: 28),
                     ],
                   ),
                 ],
@@ -137,6 +135,71 @@ class TerminalDrawer extends StatelessWidget {
               padding: const EdgeInsets.all(10),
               child: Column(
                 children: [
+                  SizedBox(
+                    width: double.infinity,
+                    height: 60,
+                    child: SecondaryButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              backgroundColor: CustomColors.backgroundColor,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)),
+                              title: const Text('Close Session',
+                                  style: TextStyle(
+                                    color: CustomColors.primaryColor,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                              content: Text(
+                                  'Are you sure you want to end the session? This will all the ongoing terminal sessions and you can\'t go back.',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium!
+                                      .copyWith(
+                                        color: CustomColors.textColor1,
+                                        fontSize: 16,
+                                      )),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text('Cancel',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium!
+                                          .copyWith(
+                                            color: CustomColors.textColor1,
+                                            fontSize: 16,
+                                          )),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text(
+                                    'Close',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium!
+                                        .copyWith(
+                                          color: CustomColors.alertColor,
+                                          fontSize: 17,
+                                        ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      text: 'Close Session',
+                      isAlert: true,
+                    ),
+                  ),
                   const SizedBox(height: 10),
                   Container(
                     padding: const EdgeInsets.symmetric(

@@ -4,6 +4,7 @@ import 'package:devsync/view/screens/on-boarding/splash_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../screens/auth/signup_screen.dart';
+import '../screens/dashboard/admin_settings_screen.dart';
 import '../screens/terminal/terminal_screen.dart';
 
 class RouteGenerator extends NavigatorObserver {
@@ -19,6 +20,8 @@ class RouteGenerator extends NavigatorObserver {
         return MaterialPageRoute(builder: (_) => const DashboardAdminScreen());
       case '/terminal':
         return MaterialPageRoute(builder: (_) => const TerminalScreen());
+      case '/admin_settings':
+        return MaterialPageRoute(builder: (_) => const AdminSettings());
       default:
         return _errorRoute();
     }

@@ -20,6 +20,7 @@ class MyApp extends StatelessWidget {
       onGenerateRoute: RouteGenerator.generateRoute,
       theme: ThemeData(
         appBarTheme: const AppBarTheme(
+          iconTheme: IconThemeData(color: CustomColors.textColor1),
           backgroundColor: CustomColors.backgroundColor2,
           titleTextStyle: TextStyle(
             color: CustomColors.textColor1,

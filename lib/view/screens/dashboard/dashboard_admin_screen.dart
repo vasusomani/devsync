@@ -47,6 +47,7 @@ class _DashboardAdminScreenState extends ConsumerState<DashboardAdminScreen> {
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) =>
             [
           SliverAppBar(
+            automaticallyImplyLeading: false,
             centerTitle: false,
             bottom: PreferredSize(
               preferredSize: const Size.fromHeight(50),
@@ -62,9 +63,65 @@ class _DashboardAdminScreenState extends ConsumerState<DashboardAdminScreen> {
                       style: Theme.of(context).textTheme.headlineSmall,
                     ),
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              backgroundColor: CustomColors.backgroundColor,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)),
+                              title: const Text('Log Out',
+                                  style: TextStyle(
+                                    color: CustomColors.primaryColor,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                              content: Text(
+                                  'Are you sure you want to log out from this device?',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium!
+                                      .copyWith(
+                                        color: CustomColors.textColor1,
+                                        fontSize: 16,
+                                      )),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text('Cancel',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium!
+                                          .copyWith(
+                                            color: CustomColors.textColor1,
+                                            fontSize: 16,
+                                          )),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text(
+                                    'Log Out',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium!
+                                        .copyWith(
+                                          color: CustomColors.alertColor,
+                                          fontSize: 17,
+                                        ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
                       icon: const Icon(
-                        Icons.settings,
+                        Icons.logout,
                         size: 30,
                         color: CustomColors.textColor1,
                       ),
@@ -76,6 +133,7 @@ class _DashboardAdminScreenState extends ConsumerState<DashboardAdminScreen> {
             titleSpacing: 0,
           ),
           SliverAppBar(
+            automaticallyImplyLeading: false,
             scrolledUnderElevation: 1,
             pinned: true,
             bottom: PreferredSize(
@@ -257,7 +315,9 @@ class _DashboardAdminScreenState extends ConsumerState<DashboardAdminScreen> {
                                         ),
                                         const Spacer(),
                                         IconButton(
-                                          onPressed: () {},
+                                          onPressed: () => setState(() {
+                                            isExpanded = !isExpanded;
+                                          }),
                                           icon: const Icon(
                                             Icons.info,
                                             color: CustomColors.primaryColor,
@@ -294,13 +354,16 @@ class _DashboardAdminScreenState extends ConsumerState<DashboardAdminScreen> {
                                                 const SizedBox(width: 15),
                                                 Expanded(
                                                     child: SecondaryButton(
-                                                  onPressed: () {},
+                                                  onPressed: () =>
+                                                      Navigator.pushNamed(
+                                                          context,
+                                                          '/admin_settings'),
                                                   text: "Settings",
                                                 )),
                                               ],
                                             ),
                                           ),
-
+                                          SizedBox(height: 10),
                                           SizedBox(
                                             width: double.maxFinite,
                                             child: SecondaryButton(
